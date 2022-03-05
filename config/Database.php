@@ -1,12 +1,23 @@
 <?php 
   class Database {
     // DB Params
-    private $host = 'localhost';
-    private $db_name = 'quotesdb';
-    private $username = 'root';
-    private $password = '';
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
     private $conn;
 
+    /**
+     * Map the DB parameters to environment variables if they exist. Otherwise use dev defaults.
+     */
+    public function __construct()
+    {   
+      $this->host = getenv('DB_HOST') ?: 'localhost';
+      $this->db_name = getenv('DB_NAME') ?: 'quotesdb';
+      $this->username = getenv('DB_USERNAME') ?: 'root';
+      $this->password = getenv('DB_PASSWORD') ?: '';
+      
+    }
     // DB Connect
     public function connect() {
       $this->conn = null;
