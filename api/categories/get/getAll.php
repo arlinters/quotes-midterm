@@ -1,16 +1,12 @@
 <?php 
-	include_once '../../includes/api_headers.php';
-	include_once '../../includes/db_connect.php';
-	include_once '../../models/Category.php';
 
 	$category = new Category($db);
 
-	$result = $category->get();
+	$result = $category->getAll();
 	$num = $result->rowCount();
 
 	if($num > 0){
 		$output = [
-			'data' => []
 		];
 
 		while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -20,7 +16,7 @@
 				'category' => $category,
 			];
 
-			array_push($output['data'], $item);
+			array_push($output, $item);
 		}
 
 		echo json_encode($output);
