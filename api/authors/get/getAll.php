@@ -1,12 +1,10 @@
 <?php
-
 include_once '../../includes/api_headers.php';
 include_once '../../includes/db_connect.php';
 include_once '../../models/Author.php';
 
 	$author = new Author($db);
-	
-	$result = $author->get();
+	$result = $author->getAll();
 	$num = $result->rowCount();
 
 	if($num > 0){

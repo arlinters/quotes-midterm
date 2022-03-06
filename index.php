@@ -4,4 +4,4 @@
 	$db = new Database();
 	$db = $db->connect();
 ?>
-Hello world Test.
+Hello World.
