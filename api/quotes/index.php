@@ -1,11 +1,16 @@
 <?php 
-// Headers
-switch($_SERVER['REQUEST_METHOD']){
-	case 'GET':
-		include './get.php';
-		break;
-	default:
-		'Something unexpected';
-}
+include_once '../../includes/api_headers.php';
+include_once '../../includes/db_connect.php';
+include_once '../../models/Quote.php';
+// For getting relative paths in the nested includes.
+include_once '../../includes/get_relative_path.php';
+
+	switch($_SERVER['REQUEST_METHOD']){
+		case 'GET':
+			include getRelativeFile(__FILE__, 'get/index.php');
+			break;
+		default:
+			'Something unexpected';
+	}
 
 ?>

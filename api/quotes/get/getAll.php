@@ -1,14 +1,8 @@
 <?php 
-  // Headers
-	include_once '../../includes/api_headers.php';
-	include_once '../../includes/db_connect.php';
-	
-	include_once '../../models/Quote.php';
-
 
 	$quote = new Quote($db);
 
-	$result = $quote->get();
+	$result = $quote->getAll();
 	$num = $result->rowCount();
 
 	if($num > 0){
