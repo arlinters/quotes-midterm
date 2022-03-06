@@ -13,7 +13,6 @@
 
 	if($num > 0){
 		$output = [
-			'data' => []
 		];
 
 		while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -25,7 +24,7 @@
 				'categoryId' => $categoryId
 			];
 
-			array_push($output['data'], $item);
+			array_push($output, $item);
 		}
 
 		echo json_encode($output);
