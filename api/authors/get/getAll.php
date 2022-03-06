@@ -9,7 +9,6 @@ include_once '../../models/Author.php';
 
 	if($num > 0){
 		$output = [
-			'data' => []
 		];
 
 		while($row = $result->fetch(PDO::FETCH_ASSOC)){
@@ -20,7 +19,7 @@ include_once '../../models/Author.php';
 				'METHOD' => $_SERVER['REQUEST_METHOD']
 			];
 
-			array_push($output['data'], $item);
+			array_push($output, $item);
 		}
 
 		echo json_encode($output);
