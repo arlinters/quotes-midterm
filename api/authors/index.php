@@ -1,4 +1,7 @@
 <?php 
+include_once '../../includes/api_headers.php';
+include_once '../../includes/db_connect.php';
+include_once '../../models/Author.php';
 include_once('../../includes/get_relative_path.php');
 
 	switch($_SERVER['REQUEST_METHOD']){

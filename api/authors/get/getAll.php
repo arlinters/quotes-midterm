@@ -1,7 +1,5 @@
 <?php
-include_once '../../includes/api_headers.php';
-include_once '../../includes/db_connect.php';
-include_once '../../models/Author.php';
+
 
 	$author = new Author($db);
 	$result = $author->getAll();
