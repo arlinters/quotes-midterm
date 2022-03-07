@@ -14,7 +14,6 @@
 			$item = [
 				'id' => $id,
 				'author' => $author,
-				'METHOD' => $_SERVER['REQUEST_METHOD']
 			];
 
 			array_push($output, $item);
