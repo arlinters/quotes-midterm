@@ -31,6 +31,68 @@
 			return $statement;
 		}
 
+		public function getAllByAuthorIdAndCategoryId($authorId, $categoryId){
+			$query = 'SELECT
+			id,
+			quote,
+			authorId,
+			categoryId
+			FROM
+			'. $this->table .'
+			WHERE
+				authorId = ? AND categoryId = ?
+			';
+			
+			// Prepare SQL statement
+			$statement = $this->conn->prepare($query);
+			$statement->bindParam(1, $authorId);
+			$statement->bindParam(2, $categoryId);
+			$statement->execute();
+
+			return $statement;
+		}
+
+		public function getAllByCategoryId($categoryId){
+			$query = 'SELECT
+			id,
+			quote,
+			authorId,
+			categoryId
+			FROM
+			'. $this->table .'
+			WHERE
+				categoryId = ?
+			';
+			
+			// Prepare SQL statement
+			$statement = $this->conn->prepare($query);
+			$statement->bindParam(1, $categoryId);
+			$statement->execute();
+
+			return $statement;
+		}
+
+		
+		public function getAllByAuthorId($authorId){
+			$query = 'SELECT
+			id,
+			quote,
+			authorId,
+			categoryId
+			FROM
+			'. $this->table .'
+			WHERE
+				authorId = ?
+			';
+			
+			// Prepare SQL statement
+			$statement = $this->conn->prepare($query);
+			$statement->bindParam(1, $authorId);
+			$statement->execute();
+
+			return $statement;
+		}
+
 		public function getById($id){
 			$query = 'SELECT
 				id,
