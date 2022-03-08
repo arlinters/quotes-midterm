@@ -50,5 +50,27 @@
 				$this->author = $row['author'];
 			}
 		}
+
+		public function create(){
+			 // Create query
+			 $query = 'INSERT INTO ' . $this->table . ' SET author = ?';
+
+			 // Prepare statement
+			 $stmt = $this->conn->prepare($query);
+
+			 // Clean data
+			 $this->author = htmlspecialchars(strip_tags($this->author));
+			 
+
+			 // Bind data
+			 $stmt->bindParam(1, $this->author);
+
+			 // Execute query
+			 if($stmt->execute()) {
+				 $this->id = $this->conn->lastInsertId();
+				 return;
+				}
+	 		throw new Exception('Error when inserting the author, '. $this->author .' into the database.');
+		}
 	}
 ?>

@@ -119,5 +119,30 @@
 				$this->quote = $row['quote'];
 			}
 		}
+		
+		public function create(){
+			// Create query
+			$query = 'INSERT INTO ' . $this->table . ' SET quote = :quote, categoryId = :cId, authorId = :aId';
+
+			// Prepare statement
+			$stmt = $this->conn->prepare($query);
+
+			// Clean data
+			$this->quote = htmlspecialchars(strip_tags($this->quote));
+			$this->categoryId = htmlspecialchars(strip_tags($this->categoryId));
+			$this->authorId = htmlspecialchars(strip_tags($this->authorId));
+
+			// Bind data
+			$stmt->bindParam(':quote', $this->quote);
+			$stmt->bindParam(':cId', $this->categoryId);
+			$stmt->bindParam(':aId', $this->authorId);
+
+			// Execute query
+			if($stmt->execute()) {
+				$this->id = $this->conn->lastInsertId();
+				return;
+			 }
+			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+	 }
 	}
 ?>
