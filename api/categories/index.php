@@ -11,6 +11,7 @@ include_once '../../includes/get_relative_path.php';
 			break;
 		case 'POST':
 			include getRelativeFile(__FILE__, 'post/create.php');
+			break;
 		default:
 			'Something unexpected';
 	}
