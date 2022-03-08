@@ -68,10 +68,9 @@
 			 // Execute query
 			 if($stmt->execute()) {
 				 $this->id = $this->conn->lastInsertId();
-				 return true;
+				 return;
 				}
 	 		throw new Exception('Error when inserting the author, '. $this->author .' into the database.');
-			return false;
 		}
 	}
 ?>

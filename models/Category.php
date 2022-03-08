@@ -48,5 +48,26 @@
 				$this->category = $row['category'];
 			}
 		}
+		public function create(){
+			// Create query
+			$query = 'INSERT INTO ' . $this->table . ' SET category = ?';
+
+			// Prepare statement
+			$stmt = $this->conn->prepare($query);
+
+			// Clean data
+			$this->category = htmlspecialchars(strip_tags($this->category));
+			
+
+			// Bind data
+			$stmt->bindParam(1, $this->category);
+
+			// Execute query
+			if($stmt->execute()) {
+				$this->id = $this->conn->lastInsertId();
+				return;
+			 }
+			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+	 }
 	}
 ?>
