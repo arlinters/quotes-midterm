@@ -1,8 +1,8 @@
 <?php 
 	if(isset($_GET['id'])){
-		include getRelativeFile(__FILE__, 'getOne.php');
+		include getRelativeFile(__FILE__, 'read_single.php');
 	}else{
-		include getRelativeFile(__FILE__, 'getMultiple.php');
+		include getRelativeFile(__FILE__, 'read.php');
 	}
 
 
