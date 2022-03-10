@@ -12,7 +12,7 @@
 			$this->conn = $db;
 		}
 
-		// Get author
+		// Get category
 		public function getAll(){
 			$query = 'SELECT
 				id,
@@ -67,7 +67,38 @@
 				$this->id = $this->conn->lastInsertId();
 				return;
 			 }
-			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+			throw new Exception('Error when inserting the category, '. $this->category .' into the database.');
 	 }
+	 public function update(){
+		// Create Query
+		$query = 'UPDATE '. $this->table . '
+				SET category = :category
+				WHERE id = :id';
+
+		// Prepare Statement
+		$stmt = $this->conn->prepare($query);
+
+		// Clean data
+		$this->category = htmlspecialchars(strip_tags($this->category));
+		$this->id = htmlspecialchars(strip_tags($this->id));
+
+		// Bind data
+		$stmt-> bindParam(':category', $this->category);
+		$stmt-> bindParam(':id', $this->id);
+
+		// Execute query
+		try{
+			$stmt->execute();
+		}
+		catch(Exception $e){
+			throw new Exception('Error when updating this category, '. $this->category .', in the database.');
+		}
+
+		if($stmt->rowCount() === 0){
+			throw new Exception('categoryId Not Found');
+		};
+
+		return;
+}
 	}
 ?>

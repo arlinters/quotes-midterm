@@ -3,10 +3,12 @@
 $author = new Author($db);
 $data = json_decode(file_get_contents("php://input"), true);
 
-if(array_key_exists("author", $data)){
+if(array_key_exists("author", $data) && array_key_exists("id", $data)){
 	$author->author = $data['author'];
+	$author->id = $data['id'];
+
 	try{
-		$author->create();
+		$author->update();
 		echo json_encode(
 			['id'=>$author->id, 'author' => $author->author]
 		);
@@ -15,7 +17,7 @@ if(array_key_exists("author", $data)){
 		// set generic 500 error
 		http_response_code(500);
 		echo json_encode(
-			['message' => 'Something went wrong when trying to insert this author into the database.']
+			['message' => $e->getMessage()]
 		);
 	}
 }
@@ -24,7 +26,5 @@ else{
 		array('message' => 'Missing Required Parameters')
 	);
 }
-
-
 
 ?>

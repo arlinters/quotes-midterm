@@ -3,10 +3,12 @@
 $category = new Category($db);
 $data = json_decode(file_get_contents("php://input"), true);
 
-if(array_key_exists("category", $data)){
+if(array_key_exists("category", $data) && array_key_exists("id", $data)){
 	$category->category = $data['category'];
+	$category->id = $data['id'];
+
 	try{
-		$category->create();
+		$category->update();
 		echo json_encode(
 			['id'=>$category->id, 'category' => $category->category]
 		);
@@ -15,7 +17,7 @@ if(array_key_exists("category", $data)){
 		// set generic 500 error
 		http_response_code(500);
 		echo json_encode(
-			['message' => 'Something went wrong when trying to insert this category into the database.']
+			['message' => $e->getMessage()]
 		);
 	}
 }
@@ -24,7 +26,5 @@ else{
 		array('message' => 'Missing Required Parameters')
 	);
 }
-
-
 
 ?>
