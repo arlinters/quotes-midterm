@@ -12,6 +12,9 @@ include_once '../../includes/get_relative_path.php';
 		case 'POST':
 			include getRelativeFile(__FILE__, 'post/create.php');
 			break;
+		case 'PUT':
+			include getRelativeFile(__FILE__, 'put/update.php');
+			break;
 		default:
 			'Something unexpected';
 	}

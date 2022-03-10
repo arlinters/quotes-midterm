@@ -1,13 +1,26 @@
 <?php
 	$quote = new Quote($db);
-	$id = isset($_GET['id']) ? $_GET['id'] : die();
-	$quote->getById($id);	
+	if(isset($_GET['id'])){
+		$quote->id = $_GET['id'];
+	}
+
+	if(isset($_GET['authorId'])){
+		$quote->authorId = $_GET['authorId'];
+	}
+
+	if(isset($_GET['categoryId'])){
+		$quote->categoryId = $_GET['categoryId'];
+	}
+
+	$quote->getByParameters();	
 
 	if($quote->quote !== null && $quote->id !== null){
 		// Create array
 		$output = array(
 			'id' => $quote->id,
-			'quote' => $quote->quote
+			'quote' => $quote->quote,			
+			'authorId' => $quote->authorId,
+			'categoryId' => $quote->categoryId
 		);
 
   // Make JSON

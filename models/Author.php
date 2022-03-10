@@ -92,10 +92,19 @@
 			$stmt-> bindParam(':id', $this->id);
 
 			// Execute query
-			if($stmt->execute()) {
-				return;
-			}
+				try{
+					$stmt->execute();
+				}
+				catch(Exception $e){
+					throw new Exception('Error when updating this author, '. $this->author .', in the database.');
+				}
 
-			throw new Exception('Error when updating this author, '. $this->author .', in the database.');
+				if($stmt->rowCount() === 0){
+					throw new Exception('authorId Not Found');
+				};
+
+				return;
+				
+
   }
 }

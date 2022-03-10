@@ -183,18 +183,22 @@
 	 public function update(){
 		// Create Query
 		$query = 'UPDATE '. $this->table . '
-				SET category = :category, quote = :quote, id = :id, authorId = :authorId
+				SET categoryId = :categoryId, quote = :quote, id = :id, authorId = :authorId
 				WHERE id = :id';
 
 		// Prepare Statement
 		$stmt = $this->conn->prepare($query);
 
 		// Clean data
-		$this->category = htmlspecialchars(strip_tags($this->category));
+		$this->categoryId = htmlspecialchars(strip_tags($this->categoryId));
+		$this->authorId = htmlspecialchars(strip_tags($this->authorId));
+		$this->quote = htmlspecialchars(strip_tags($this->quote));
 		$this->id = htmlspecialchars(strip_tags($this->id));
 
 		// Bind data
-		$stmt-> bindParam(':category', $this->category);
+		$stmt-> bindParam(':categoryId', $this->categoryId);
+		$stmt-> bindParam(':quote', $this->quote);
+		$stmt-> bindParam(':authorId', $this->authorId);
 		$stmt-> bindParam(':id', $this->id);
 
 		// Execute query
@@ -202,11 +206,11 @@
 			$stmt->execute();
 		}
 		catch(Exception $e){
-			throw new Exception('Error when updating this category, '. $this->category .', in the database.');
+			throw new Exception('Error when updating this quote, '. $this->quote .', in the database.');
 		}
 
 		if($stmt->rowCount() === 0){
-			throw new Exception('categoryId Not Found');
+			throw new Exception('quote Not Found');
 		};
 
 		return;
