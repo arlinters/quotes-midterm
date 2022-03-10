@@ -1,6 +1,4 @@
 <?php
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, categoryization, X-Requested-With');
 
 $category = new Category($db);
 $data = json_decode(file_get_contents("php://input"), true);

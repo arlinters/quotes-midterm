@@ -1,6 +1,4 @@
 <?php
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 $author = new Author($db);
 $data = json_decode(file_get_contents("php://input"), true);
