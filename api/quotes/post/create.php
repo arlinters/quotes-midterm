@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Headers: content-type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 $quote = new Quote($db);
 $data = json_decode(file_get_contents("php://input"), true);
