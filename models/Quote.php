@@ -93,22 +93,58 @@
 			return $statement;
 		}
 
-		public function getById($id){
-			$query = 'SELECT
+		/**
+		 * Dynamically filters based on what properties are set on the object.
+		 */
+		public function getByParameters(){
+			// Initialize where clause strings if the property exists
+			$idWhereClause = $this->id ? 'id = :id' : '';
+			$categoryIdWhereClause = $this->categoryId ? 'categoryId = :categoryId' : '';
+			$authorIdWhereClause = $this->authorId ? 'authorId = :authorId' : '';
+
+			// If all three conditions are present
+			if($idWhereClause !== '' && $categoryIdWhereClause !== '' && $authorIdWhereClause !== ''){
+				$categoryIdWhereClause = ' AND '. $categoryIdWhereClause .' AND';
+			}
+			// if the ID and either the 2nd or 3rd option are present
+			elseif(
+				($idWhereClause != '' && $categoryIdWhereClause !== '') 
+				xor ($idWhereClause != '' && $authorIdWhereClause !== '')
+			){
+				$idWhereClause = $idWhereClause . " AND";
+			}
+			// If only the categoryId and authorId are present
+			elseif($categoryIdWhereClause !== '' && $authorIdWhereClause !== ''){
+				$categoryIdWhereClause = $categoryIdWhereClause ." AND ";
+			}
+
+			$queryTemplate = 'SELECT
 				id,
 				quote,
 				authorId,
 				categoryId
 			FROM
-			'. $this->table.'
+			 %s
 			
-			WHERE id = ?
+			WHERE
+			 %s
+			 %s
+			 %s
 			LIMIT 0,1';
 
+			$query = sprintf($queryTemplate, $this->table, $idWhereClause, $categoryIdWhereClause, $authorIdWhereClause);
 			// Prepare SQL statement
 			$statement = $this->conn->prepare($query);
 
-			$statement->bindParam(1, $id);
+			if($this->id){
+				$statement->bindParam(':id', $this->id);
+			}
+			if($this->authorId){
+				$statement->bindParam(':authorId', $this->authorId);
+			}
+			if($this->categoryId){
+				$statement->bindParam(':categoryId', $this->categoryId);
+			}
 			$statement->execute();
 			
       $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -144,5 +180,36 @@
 			 }
 			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
 	 }
+	 public function update(){
+		// Create Query
+		$query = 'UPDATE '. $this->table . '
+				SET category = :category, quote = :quote, id = :id, authorId = :authorId
+				WHERE id = :id';
+
+		// Prepare Statement
+		$stmt = $this->conn->prepare($query);
+
+		// Clean data
+		$this->category = htmlspecialchars(strip_tags($this->category));
+		$this->id = htmlspecialchars(strip_tags($this->id));
+
+		// Bind data
+		$stmt-> bindParam(':category', $this->category);
+		$stmt-> bindParam(':id', $this->id);
+
+		// Execute query
+		try{
+			$stmt->execute();
+		}
+		catch(Exception $e){
+			throw new Exception('Error when updating this category, '. $this->category .', in the database.');
+		}
+
+		if($stmt->rowCount() === 0){
+			throw new Exception('categoryId Not Found');
+		};
+
+		return;
+}
 	}
 ?>
