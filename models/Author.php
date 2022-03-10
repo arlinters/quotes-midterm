@@ -72,5 +72,30 @@
 				}
 	 		throw new Exception('Error when inserting the author, '. $this->author .' into the database.');
 		}
-	}
-?>
+
+
+		public function update(){
+			// Create Query
+			$query = 'UPDATE '. $this->table . '
+					SET author = :author
+					WHERE id = :id';
+
+			// Prepare Statement
+			$stmt = $this->conn->prepare($query);
+
+			// Clean data
+			$this->author = htmlspecialchars(strip_tags($this->author));
+			$this->id = htmlspecialchars(strip_tags($this->id));
+
+			// Bind data
+			$stmt-> bindParam(':author', $this->author);
+			$stmt-> bindParam(':id', $this->id);
+
+			// Execute query
+			if($stmt->execute()) {
+				return;
+			}
+
+			throw new Exception('Error when updating this author, '. $this->author .', in the database.');
+  }
+}
