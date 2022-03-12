@@ -18,16 +18,15 @@ if(
 		$quote->update();
 		echo json_encode(
 			[
-				'id'=>$quote->id,
+				'id'=>(int)$quote->id,
 				'quote' => $quote->quote,
-				'categoryId' => $quote->categoryId,
-				'authorId' => $quote->authorId
+				'categoryId' => (int)$quote->categoryId,
+				'authorId' => (int)$quote->authorId
 				]
 		);
 	}
 	catch(Exception $e){
 		// set generic 500 error
-		http_response_code(500);
 		echo json_encode(
 			['message' => $e->getMessage()]
 		);

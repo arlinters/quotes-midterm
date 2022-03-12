@@ -8,7 +8,7 @@ if(array_key_exists("author", $data)){
 	try{
 		$author->create();
 		echo json_encode(
-			['id'=>$author->id, 'author' => $author->author]
+			['id'=>(int)$author->id, 'author' => $author->author]
 		);
 	}
 	catch(Exception $e){
