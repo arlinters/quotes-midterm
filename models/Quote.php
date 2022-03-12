@@ -215,5 +215,30 @@
 
 		return;
 }
+public function delete() {
+	$query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+
+	$statement = $this->conn->prepare($query);
+
+	// clean data
+	$this->id = htmlspecialchars(strip_tags($this->id));
+
+	// Bind Data
+	$statement-> bindParam(':id', $this->id);
+
+
+	try{
+		$statement->execute();
+	}
+	catch(Exception $e){
+		throw new Exception('Error when removing this quote Id, '. $this->id .', in the database.');
+	}
+
+	if($statement->rowCount() === 0){
+		throw new Exception('No Quotes Found');
+	};
+
+	return;
+	}
 	}
 ?>
