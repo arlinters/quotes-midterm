@@ -17,16 +17,15 @@ if(
 		$quote->create();
 		echo json_encode(
 			[
-				'id'=>$quote->id,
+				'id'=>(int)$quote->id,
 				'quote' => $quote->quote,
-				'authorId' => $quote->authorId,
-				'categoryId' => $quote->categoryId
+				'authorId' => (int)$quote->authorId,
+				'categoryId' => (int)$quote->categoryId
 			]
 		);
 	}
 	catch(Exception $e){
 		// set generic 500 error
-		http_response_code(500);
 		echo json_encode(
 			['error' => $e->getMessage()]
 		);

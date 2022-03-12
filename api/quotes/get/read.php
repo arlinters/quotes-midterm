@@ -26,10 +26,10 @@
 		while($row = $result->fetch(PDO::FETCH_ASSOC)){
 			extract($row);
 			$item = [
-				'id' => $id,
+				'id' => (int)$id,
 				'quote' => $quote,
-				'authorId' => $authorId,
-				'categoryId' => $categoryId
+				'authorId' => (int)$authorId,
+				'categoryId' => (int)$categoryId
 			];
 
 			array_push($output, $item);

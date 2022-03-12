@@ -14,8 +14,6 @@ if(array_key_exists("author", $data) && array_key_exists("id", $data)){
 		);
 	}
 	catch(Exception $e){
-		// set generic 500 error
-		http_response_code(500);
 		echo json_encode(
 			['message' => $e->getMessage()]
 		);

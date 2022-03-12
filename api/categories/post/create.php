@@ -8,7 +8,7 @@ if(array_key_exists("category", $data)){
 	try{
 		$category->create();
 		echo json_encode(
-			['id'=>$category->id, 'category' => $category->category]
+			['id'=>(int)$category->id, 'category' => $category->category]
 		);
 	}
 	catch(Exception $e){

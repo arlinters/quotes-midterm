@@ -56,17 +56,17 @@
 			 $query = 'INSERT INTO ' . $this->table . ' SET author = ?';
 
 			 // Prepare statement
-			 $stmt = $this->conn->prepare($query);
+			 $statement = $this->conn->prepare($query);
 
 			 // Clean data
 			 $this->author = htmlspecialchars(strip_tags($this->author));
 			 
 
 			 // Bind data
-			 $stmt->bindParam(1, $this->author);
+			 $statement->bindParam(1, $this->author);
 
 			 // Execute query
-			 if($stmt->execute()) {
+			 if($statement->execute()) {
 				 $this->id = $this->conn->lastInsertId();
 				 return;
 				}
@@ -81,25 +81,25 @@
 					WHERE id = :id';
 
 			// Prepare Statement
-			$stmt = $this->conn->prepare($query);
+			$statement = $this->conn->prepare($query);
 
 			// Clean data
 			$this->author = htmlspecialchars(strip_tags($this->author));
 			$this->id = htmlspecialchars(strip_tags($this->id));
 
 			// Bind data
-			$stmt-> bindParam(':author', $this->author);
-			$stmt-> bindParam(':id', $this->id);
+			$statement-> bindParam(':author', $this->author);
+			$statement-> bindParam(':id', $this->id);
 
 			// Execute query
 				try{
-					$stmt->execute();
+					$statement->execute();
 				}
 				catch(Exception $e){
 					throw new Exception('Error when updating this author, '. $this->author .', in the database.');
 				}
 
-				if($stmt->rowCount() === 0){
+				if($statement->rowCount() === 0){
 					throw new Exception('authorId Not Found');
 				};
 
@@ -107,4 +107,30 @@
 				
 
   }
+
+  public function delete() {
+    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+
+    $statement = $this->conn->prepare($query);
+
+    // clean data
+    $this->id = (int)htmlspecialchars(strip_tags($this->id));
+
+    // Bind Data
+    $statement-> bindParam(':id', $this->id);
+
+
+		try{
+			$statement->execute();
+		}
+		catch(Exception $e){
+			throw new Exception('Error when updating this author, '. $this->author .', in the database.');
+		}
+
+		if($statement->rowCount() === 0){
+			throw new Exception('authorId Not Found');
+		};
+
+		return;
+    }
 }

@@ -1,16 +1,15 @@
 <?php
 
-$category = new Category($db);
+$quote = new Quote($db);
 $data = json_decode(file_get_contents("php://input"), true);
 
-if(array_key_exists("category", $data) && array_key_exists("id", $data)){
-	$category->category = $data['category'];
-	$category->id = $data['id'];
+if(array_key_exists("id", $data)){
+	$quote->id = $data['id'];
 
 	try{
-		$category->update();
+		$quote->delete();
 		echo json_encode(
-			['id'=>(int)$category->id, 'category' => $category->category]
+			['id'=>(int)$quote->id]
 		);
 	}
 	catch(Exception $e){

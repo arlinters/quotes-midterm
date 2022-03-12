@@ -3,14 +3,13 @@
 $category = new Category($db);
 $data = json_decode(file_get_contents("php://input"), true);
 
-if(array_key_exists("category", $data) && array_key_exists("id", $data)){
-	$category->category = $data['category'];
+if(array_key_exists("id", $data)){
 	$category->id = $data['id'];
 
 	try{
-		$category->update();
+		$category->delete();
 		echo json_encode(
-			['id'=>(int)$category->id, 'category' => $category->category]
+			['id'=>(int)$category->id]
 		);
 	}
 	catch(Exception $e){

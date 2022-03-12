@@ -9,6 +9,9 @@ include_once '../../includes/get_relative_path.php';
 		case 'GET':
 			include getRelativeFile(__FILE__, 'get/index.php');
 			break;
+		case 'DELETE':
+			include getRelativeFile(__FILE__, 'delete/remove.php');
+			break;
 		case 'POST':
 			include getRelativeFile(__FILE__, 'post/create.php');
 			break;
