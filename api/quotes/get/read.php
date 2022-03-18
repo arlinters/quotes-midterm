@@ -28,8 +28,8 @@
 			$item = [
 				'id' => (int)$id,
 				'quote' => $quote,
-				'authorId' => (int)$authorId,
-				'categoryId' => (int)$categoryId
+				'author' => $author,
+				'category' => $category
 			];
 
 			array_push($output, $item);

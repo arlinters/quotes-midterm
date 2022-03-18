@@ -19,8 +19,8 @@
 		$output = array(
 			'id' => $quote->id,
 			'quote' => $quote->quote,			
-			'authorId' => $quote->authorId,
-			'categoryId' => $quote->categoryId
+			'author' => $quote->author->author,
+			'category' => $quote->category->category
 		);
 
   // Make JSON

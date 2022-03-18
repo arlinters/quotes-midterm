@@ -1,4 +1,6 @@
 <?php
+ include_once('Author.php');
+ include_once('Category.php');
 	class Quote{
 		// Database Information
 		private $conn;
@@ -9,6 +11,8 @@
 		public $quote;
 		public $authorId;
 		public $categoryId;
+		public $author;
+		public $category;
 
 		public function __construct(\PDO $db){
 			$this->conn = $db;
@@ -17,13 +21,17 @@
 		// Get author
 		public function getAll(){
 			$query = 'SELECT
-				id,
-				quote,
-				authorId,
-				categoryId
+			quotes.id id,
+			quote,
+			authors.id authorId,
+			author,
+			categories.id categoryId,
+			category
 			FROM
-			'. $this->table;
-
+			'. $this->table.'
+			LEFT JOIN categories ON quotes.categoryId = categories.id
+			LEFT JOIN authors ON quotes.authorId = authors.id		
+			';
 			// Prepare SQL statement
 			$statement = $this->conn->prepare($query);
 			$statement->execute();
@@ -98,9 +106,9 @@
 		 */
 		public function getByParameters(){
 			// Initialize where clause strings if the property exists
-			$idWhereClause = $this->id ? 'id = :id' : '';
-			$categoryIdWhereClause = $this->categoryId ? 'categoryId = :categoryId' : '';
-			$authorIdWhereClause = $this->authorId ? 'authorId = :authorId' : '';
+			$idWhereClause = $this->id ? 'quotes.id = :id' : '';
+			$categoryIdWhereClause = $this->categoryId ? 'quotes.categoryId = :categoryId' : '';
+			$authorIdWhereClause = $this->authorId ? 'quotes.authorId = :authorId' : '';
 
 			// If all three conditions are present
 			if($idWhereClause !== '' && $categoryIdWhereClause !== '' && $authorIdWhereClause !== ''){
@@ -119,18 +127,21 @@
 			}
 
 			$queryTemplate = 'SELECT
-				id,
+				quotes.id id,
 				quote,
-				authorId,
-				categoryId
+				authors.id authorId,
+				author,
+				categories.id categoryId,
+				category
 			FROM
 			 %s
+			 LEFT JOIN categories ON quotes.categoryId = categories.id
+			 LEFT JOIN authors ON quotes.authorId = authors.id			 
 			
 			WHERE
 			 %s
 			 %s
-			 %s
-			LIMIT 0,1';
+			 %s';
 
 			$query = sprintf($queryTemplate, $this->table, $idWhereClause, $categoryIdWhereClause, $authorIdWhereClause);
 			// Prepare SQL statement
@@ -150,8 +161,12 @@
       $row = $statement->fetch(PDO::FETCH_ASSOC);
 			if($row){
 				$this->id = $row['id'];
-				$this->authorId = $row['authorId'];
-				$this->categoryId = $row['categoryId'];
+				$this->author = new Author($this->conn);
+				$this->category = new Category($this->conn);
+				$this->author->author = $row['author'];
+				$this->author->id = $row['authorId'];
+				$this->category->id = $row['categoryId'];
+				$this->category->category = $row['category'];
 				$this->quote = $row['quote'];
 			}
 		}
