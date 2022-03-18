@@ -208,12 +208,18 @@
 		try{
 			$stmt->execute();
 		}
-		catch(Exception $e){
-			throw new Exception('Error when updating this quote, '. $this->quote .', in the database.');
+		catch(PDOException $e){
+			if(str_contains($e->getMessage(), "authorId")){
+				throw new Exception("authorId Not Found");
+			}
+			elseif (str_contains($e->getMessage(), "categoryId")) {
+				throw new Exception("categoryId Not Found");
+			}
+			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
 		}
 
 		if($stmt->rowCount() === 0){
-			throw new Exception('quote Not Found');
+			throw new Exception('No Quotes Found');
 		};
 
 		return;
