@@ -169,11 +169,19 @@
 			$stmt->bindParam(':aId', $this->authorId);
 
 			// Execute query
-			if($stmt->execute()) {
+			try{
+				$stmt->execute();
 				$this->id = $this->conn->lastInsertId();
-				return;
-			 }
-			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+			}
+			catch(PDOException $e){
+				if(str_contains($e->getMessage(), "authorId")){
+					throw new Exception("authorId Not Found");
+				}
+				elseif (str_contains($e->getMessage(), "categoryId")) {
+					throw new Exception("categoryId Not Found");
+				}
+				throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+			}
 	 }
 	 public function update(){
 		// Create Query

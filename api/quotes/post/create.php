@@ -27,7 +27,7 @@ if(
 	catch(Exception $e){
 		// set generic 500 error
 		echo json_encode(
-			['error' => $e->getMessage()]
+			['message' => $e->getMessage()]
 		);
 	}
 }
