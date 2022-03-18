@@ -41,12 +41,16 @@
 
 		public function getAllByAuthorIdAndCategoryId($authorId, $categoryId){
 			$query = 'SELECT
-			id,
-			quote,
-			authorId,
-			categoryId
+				quotes.id id,
+				quote,
+				authors.id authorId,
+				author,
+				categories.id categoryId,
+				category
 			FROM
-			'. $this->table .'
+			 '.$this->table.'
+			 LEFT JOIN categories ON quotes.categoryId = categories.id
+			 LEFT JOIN authors ON quotes.authorId = authors.id			 
 			WHERE
 				authorId = ? AND categoryId = ?
 			';
@@ -62,12 +66,16 @@
 
 		public function getAllByCategoryId($categoryId){
 			$query = 'SELECT
-			id,
-			quote,
-			authorId,
-			categoryId
+				quotes.id id,
+				quote,
+				authors.id authorId,
+				author,
+				categories.id categoryId,
+				category
 			FROM
-			'. $this->table .'
+			 '.$this->table.'
+			 LEFT JOIN categories ON quotes.categoryId = categories.id
+			 LEFT JOIN authors ON quotes.authorId = authors.id			 
 			WHERE
 				categoryId = ?
 			';
@@ -83,12 +91,16 @@
 		
 		public function getAllByAuthorId($authorId){
 			$query = 'SELECT
-			id,
-			quote,
-			authorId,
-			categoryId
+				quotes.id id,
+				quote,
+				authors.id authorId,
+				author,
+				categories.id categoryId,
+				category
 			FROM
-			'. $this->table .'
+			 '.$this->table.'
+			 LEFT JOIN categories ON quotes.categoryId = categories.id
+			 LEFT JOIN authors ON quotes.authorId = authors.id			 
 			WHERE
 				authorId = ?
 			';
@@ -101,32 +113,9 @@
 			return $statement;
 		}
 
-		/**
-		 * Dynamically filters based on what properties are set on the object.
-		 */
-		public function getByParameters(){
-			// Initialize where clause strings if the property exists
-			$idWhereClause = $this->id ? 'quotes.id = :id' : '';
-			$categoryIdWhereClause = $this->categoryId ? 'quotes.categoryId = :categoryId' : '';
-			$authorIdWhereClause = $this->authorId ? 'quotes.authorId = :authorId' : '';
+		public function getByQuoteId(){
 
-			// If all three conditions are present
-			if($idWhereClause !== '' && $categoryIdWhereClause !== '' && $authorIdWhereClause !== ''){
-				$categoryIdWhereClause = ' AND '. $categoryIdWhereClause .' AND';
-			}
-			// if the ID and either the 2nd or 3rd option are present
-			elseif(
-				($idWhereClause != '' && $categoryIdWhereClause !== '') 
-				xor ($idWhereClause != '' && $authorIdWhereClause !== '')
-			){
-				$idWhereClause = $idWhereClause . " AND";
-			}
-			// If only the categoryId and authorId are present
-			elseif($categoryIdWhereClause !== '' && $authorIdWhereClause !== ''){
-				$categoryIdWhereClause = $categoryIdWhereClause ." AND ";
-			}
-
-			$queryTemplate = 'SELECT
+			$query = 'SELECT
 				quotes.id id,
 				quote,
 				authors.id authorId,
@@ -134,28 +123,19 @@
 				categories.id categoryId,
 				category
 			FROM
-			 %s
+			 '.$this->table.'
 			 LEFT JOIN categories ON quotes.categoryId = categories.id
 			 LEFT JOIN authors ON quotes.authorId = authors.id			 
 			
 			WHERE
-			 %s
-			 %s
-			 %s';
+				quotes.id = :id
+			';
 
-			$query = sprintf($queryTemplate, $this->table, $idWhereClause, $categoryIdWhereClause, $authorIdWhereClause);
 			// Prepare SQL statement
 			$statement = $this->conn->prepare($query);
 
-			if($this->id){
-				$statement->bindParam(':id', $this->id);
-			}
-			if($this->authorId){
-				$statement->bindParam(':authorId', $this->authorId);
-			}
-			if($this->categoryId){
-				$statement->bindParam(':categoryId', $this->categoryId);
-			}
+			$statement->bindParam(':id', $this->id);
+			
 			$statement->execute();
 			
       $row = $statement->fetch(PDO::FETCH_ASSOC);

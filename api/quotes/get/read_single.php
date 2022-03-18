@@ -4,15 +4,7 @@
 		$quote->id = $_GET['id'];
 	}
 
-	if(isset($_GET['authorId'])){
-		$quote->authorId = $_GET['authorId'];
-	}
-
-	if(isset($_GET['categoryId'])){
-		$quote->categoryId = $_GET['categoryId'];
-	}
-
-	$quote->getByParameters();	
+	$quote->getByQuoteId();	
 
 	if($quote->quote !== null && $quote->id !== null){
 		// Create array
