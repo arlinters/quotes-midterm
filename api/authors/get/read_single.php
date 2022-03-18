@@ -19,7 +19,7 @@
 	}
 	else{
 		echo json_encode(
-			array('message' => 'No Authors Found')
+			array('message' => 'authorId Not Found')
 		);
 	}
 ?>
