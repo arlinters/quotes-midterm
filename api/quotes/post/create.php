@@ -3,7 +3,7 @@
 $quote = new Quote($db);
 $data = json_decode(file_get_contents("php://input"), true);
 
-
+// Require all properties in order to POST
 if(
 	array_key_exists("quote", $data) &&
 	array_key_exists("authorId", $data) &&

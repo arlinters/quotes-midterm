@@ -1,17 +1,18 @@
 <?php
 	$category = new Category($db);
+	// If it's not set, stop proc
 	$id = isset($_GET['id']) ? $_GET['id'] : die();
 	$category->getById($id);	
 
+	// Verify there is a response to output
 	if($category->category !== null && $category->id !== null){
-	
 		// Create array
 		$output = array(
 			'id' => $category->id,
 			'category' => $category->category
 		);
 
-  // Make JSON
+  // return JSON
   echo json_encode($output);
 
 	}
