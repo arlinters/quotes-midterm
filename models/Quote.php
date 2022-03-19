@@ -215,7 +215,7 @@
 			elseif (str_contains($e->getMessage(), "categoryId")) {
 				throw new Exception("categoryId Not Found");
 			}
-			throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+			throw new Exception("An unexpected error has occurred.");
 		}
 
 		if($stmt->rowCount() === 0){

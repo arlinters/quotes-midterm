@@ -4,6 +4,7 @@ include_once '../../includes/db_connect.php';
 include_once '../../models/Author.php';
 include_once('../../includes/get_relative_path.php');
 
+// Route to the correct file based on the request method.
 	switch($_SERVER['REQUEST_METHOD']){
 		case 'GET':
 			include getRelativeFile(__FILE__, 'get/index.php');
