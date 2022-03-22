@@ -9,13 +9,13 @@
 		// Properties
 		public $id;
 		public $quote;
-		public $authorId;
-		public $categoryId;
 		public $author;
 		public $category;
 
 		public function __construct(\PDO $db){
 			$this->conn = $db;
+			$this->author = new Author($db);
+			$this->category = new Category($db);
 		}
 
 		// Get author
@@ -141,8 +141,6 @@
       $row = $statement->fetch(PDO::FETCH_ASSOC);
 			if($row){
 				$this->id = $row['id'];
-				$this->author = new Author($this->conn);
-				$this->category = new Category($this->conn);
 				$this->author->author = $row['author'];
 				$this->author->id = $row['authorId'];
 				$this->category->id = $row['categoryId'];
@@ -151,7 +149,7 @@
 			}
 		}
 		
-		public function create(){
+		public function create($authorId, $categoryId){
 			// Create query
 			$query = 'INSERT INTO ' . $this->table . ' SET quote = :quote, categoryId = :cId, authorId = :aId';
 
@@ -160,13 +158,13 @@
 
 			// Clean data
 			$this->quote = htmlspecialchars(strip_tags($this->quote));
-			$this->categoryId = htmlspecialchars(strip_tags($this->categoryId));
-			$this->authorId = htmlspecialchars(strip_tags($this->authorId));
+			$this->category->id = htmlspecialchars(strip_tags($categoryId));
+			$this->author->id = htmlspecialchars(strip_tags($authorId));
 
 			// Bind data
 			$stmt->bindParam(':quote', $this->quote);
-			$stmt->bindParam(':cId', $this->categoryId);
-			$stmt->bindParam(':aId', $this->authorId);
+			$stmt->bindParam(':cId', $this->category->id);
+			$stmt->bindParam(':aId', $this->author->id);
 
 			// Execute query
 			try{
@@ -180,10 +178,10 @@
 				elseif (str_contains($e->getMessage(), "categoryId")) {
 					throw new Exception("categoryId Not Found");
 				}
-				throw new Exception('Error when inserting the author, '. $this->category .' into the database.');
+				throw new Exception('Error when inserting the quote, '. $this->quote .' into the database.');
 			}
 	 }
-	 public function update(){
+	 public function update($authorId, $categoryId){
 		// Create Query
 		$query = 'UPDATE '. $this->table . '
 				SET categoryId = :categoryId, quote = :quote, id = :id, authorId = :authorId
@@ -193,15 +191,15 @@
 		$stmt = $this->conn->prepare($query);
 
 		// Clean data
-		$this->categoryId = htmlspecialchars(strip_tags($this->categoryId));
-		$this->authorId = htmlspecialchars(strip_tags($this->authorId));
+		$this->category->id = htmlspecialchars(strip_tags($categoryId));
+		$this->author->id = htmlspecialchars(strip_tags($authorId));
 		$this->quote = htmlspecialchars(strip_tags($this->quote));
 		$this->id = htmlspecialchars(strip_tags($this->id));
 
 		// Bind data
-		$stmt-> bindParam(':categoryId', $this->categoryId);
+		$stmt-> bindParam(':categoryId', $this->category->id);
 		$stmt-> bindParam(':quote', $this->quote);
-		$stmt-> bindParam(':authorId', $this->authorId);
+		$stmt-> bindParam(':authorId', $this->author->id);
 		$stmt-> bindParam(':id', $this->id);
 
 		// Execute query

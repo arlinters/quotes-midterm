@@ -10,17 +10,15 @@ if(
 	array_key_exists("categoryId", $data)
 ){
 	$quote->quote = $data['quote'];
-	$quote->authorId = $data['authorId'];
-	$quote->categoryId = $data['categoryId'];
 
 	try{
-		$quote->create();
+		$quote->create($data['authorId'], $data['categoryId']);
 		echo json_encode(
 			[
 				'id'=>(int)$quote->id,
 				'quote' => $quote->quote,
-				'authorId' => (int)$quote->authorId,
-				'categoryId' => (int)$quote->categoryId
+				'authorId' => (int)$quote->author->id,
+				'categoryId' => (int)$quote->category->id
 			]
 		);
 	}

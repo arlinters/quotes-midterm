@@ -11,17 +11,14 @@ if(
 ){
 	$quote->quote = $data['quote'];
 	$quote->id = $data['id'];
-	$quote->authorId = $data['authorId'];
-	$quote->categoryId = $data['categoryId'];
-
 	try{
-		$quote->update();
+		$quote->update($data['authorId'],$data['categoryId']);
 		echo json_encode(
 			[
 				'id'=>(int)$quote->id,
 				'quote' => $quote->quote,
-				'categoryId' => (int)$quote->categoryId,
-				'authorId' => (int)$quote->authorId
+				'categoryId' => (int)$quote->category->id,
+				'authorId' => (int)$quote->author->id
 				]
 		);
 	}
